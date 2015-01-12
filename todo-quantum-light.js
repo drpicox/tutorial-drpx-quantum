@@ -49,7 +49,7 @@ angular.module('todoApp', ['drpxQuantum'])
 			this._todos = [];
 			angular.forEach(oldTodos, function(todo) {
 				if (!todo.done) this._todos.push(todo);
-			});
+			}, this);
 		}
 		function count() {
 			return this._todos.length;
