@@ -22,7 +22,7 @@
 	</p>
 
 	<h2>Todo</h2>
-	<div ng-controller="TodoController as vm">
+	<div ng-controller="TodoController as vm" ng-cloak>
       <span>{{vm.todos.remaining()}} of {{vm.todos.count()}} remaining</span>
       [ <a href="" ng-click="vm.todos.archive()">archive</a> ]
       <ul class="unstyled">
