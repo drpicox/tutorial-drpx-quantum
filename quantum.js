@@ -41,6 +41,7 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 	Quantum.getter = getter;
 	Quantum.getterSetter = getterSetter;
+	Quantum.prepareGetter = prepareGetter;
 	Quantum.setter = setter;
 
 
@@ -50,7 +51,7 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
 		if (fn.length > 0) {
 			args = [];
 			cache = [];
-			return function observeWithArgs() {
+			return function getterWithArgs() {
 				var i, l, swapArgs, swapCache;
 
 				// if timestamp does not match, clear cache
@@ -80,7 +81,7 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
 				return cache[0];
 			}
 		} else {
-			return function observeWithoutArgs() {
+			return function getterWithoutArgs() {
 				if (timestamp !== this.$$timestamp) {
 					cache = fn.apply(this, arguments);
 					timestamp = this.$$timestamp;
@@ -101,6 +102,15 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
 			}
 
 			return getter.call(this);
+		}
+	}
+
+	function prepareGetter(fn) {
+		return function preparer() {
+			var bindings;
+			bindings = Array.prototype.slice.call(arguments);
+			bindings.unshift(this);
+			return getter(fn.bind.apply(fn, bindings)).bind(this);
 		}
 	}
 
